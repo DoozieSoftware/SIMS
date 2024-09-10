@@ -202,7 +202,7 @@
                     <div class="form-group col-md-6 justify-content-end">
                         <label for="assigned_to"><b>Assigned To*</b></label>
                         <select class="form-select" name="assigned_to" id="assigned_to">
-                            <option selected disabled>Select Assigned To</option>
+                            <option value="" disabled selected>Select Assigned To</option>
                             @foreach ($employees as $employee)
                             <option value="{{ $employee->id }}">{{ $employee->first_name }}</option>
                             @endforeach
@@ -210,7 +210,6 @@
                         @error('assigned_to')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
-
                     </div>
                 </div>
                 <div class="form-row mb-4">
@@ -228,7 +227,16 @@
     </div>
 </div>
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+    $(document).ready(function() {
+    $('#assigned_to').select2({
+        placeholder: "Select Assigned To",
+        allowClear: true
+    });
+});
     $(document).ready(function() {
             $('#billing_country_id').change(function() {
                 var countryId = $(this).val();

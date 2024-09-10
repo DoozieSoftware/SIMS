@@ -185,8 +185,8 @@
                     <div>
                         @foreach ($services as $service)
                         <div class="form-check">
-                            <input class="form-check-input service-checkbox" type="checkbox" value="{{ $service->id }}"
-                                name="services[]" id="service_{{ $service->id }}"
+                            <input class="form-check-input" type="checkbox" value="{{ $service->id }}" name="services[]"
+                                id="service_{{ $service->id }}"
                                 {{ $customers->services->contains($service->id) ? 'checked' : '' }}>
                             <label class="form-check-label" for="service_{{ $service->id }}">
                                 {{ $service->name }}
@@ -199,7 +199,7 @@
                 <div class="form-group col-md-6">
                     <label for="assigned_to"><b>Assigned To*</b></label>
                     <select class="form-select" name="assigned_to" id="assigned_to" required>
-                        <option selected disabled>Select Assigned To</option>
+                        <option value="" disabled selected>Select Assigned To</option>
                         @foreach ($employees as $employee)
                         <option value="{{ $employee->id }}"
                             {{ $employee->id == $customers->assigned_to ? 'selected' : '' }}>
@@ -225,8 +225,15 @@
 </form>
 </div>
 </div>
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).ready(function() {
+    $('#assigned_to').select2({
+        placeholder: "Select Assigned To",
+        allowClear: true
+    });
+});
     $(document).ready(function() {
             $('#billing_country_id').change(function() {
                 var countryId = $(this).val();

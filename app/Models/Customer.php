@@ -69,4 +69,9 @@ class Customer extends Model
     {
         return $this->belongsTo(City::class, 'shipping_city_id');
     }
+
+    public function assignedUser()
+    {
+        return $this->belongsTo(Employee::class, 'assigned_to');
+    }
 }

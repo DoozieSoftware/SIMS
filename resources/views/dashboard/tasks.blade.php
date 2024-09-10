@@ -24,74 +24,100 @@
         <div id="{{ $type }}Tasks" class="table-responsive">
             <h4 style="color:white;">{{ strtoupper($type) }} Tasks</h4>
 
-            <div class="row mb-3">
-                <div class="form-group col-md-4">
-                    <select id="customer" name="customer" class="form-select">
-                        <option value="">Select Customer Name</option>
-                        @foreach($customers as $customer)
-                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('customer')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
+            <form action="{{ route('dashboard.tasks', ['type' => $type]) }}" method="GET">
+                @csrf
+                <div class="row mb-3">
+                    <div class="form-group col-md-3">
+                        <select id="customer" name="customer" class="form-select">
+                            <option value="">Select Customer Name</option>
+                            @foreach($customers as $customer)
+                            <option value="{{ $customer->id }}"
+                                {{ request('customer') == $customer->id ? 'selected' : '' }}>
+                                {{ $customer->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('customer')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                <div class="form-group col-md-4">
-                    <select id="month" name="month" class="form-select">
-                        <option value="">Select by Month</option>
-                        @php
-                        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                        'September', 'October', 'November', 'December'];
-                        @endphp
-                        @foreach($months as $month)
-                        <option value="{{ $month }}" {{ $month === $currentMonth ? 'selected' : '' }}>
-                            {{ $month }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('month')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-            <br>
+                    <div class="form-group col-md-3">
+                        <select id="month" name="month" class="form-select">
+                            <option value="">Select by Month</option>
+                            @php
+                            $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                            'September', 'October', 'November', 'December'];
+                            @endphp
+                            @foreach($months as $month)
+                            <option value="{{ $month }}"
+                                {{ $month === request('month', $currentMonth) ? 'selected' : '' }}>
+                                {{ $month }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('month')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-            <table class="table table-striped">
-                <thead class="thead-light">
-                    <tr>
-                        <th scope="col">Customer Name</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Remarks</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($tasks as $task)
-                    <tr>
-                        <td>{{ $task->customer ? $task->customer->name : 'N/A' }}</td>
-                        <td>
-                            <form action="{{ route('update.task.status') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="task_id" value="{{ $task->id }}">
-                                <select name="status" class="form-select" onchange="this.form.submit()">
+                    <div class="form-group col-md-3">
+                        <select id="year" name="year" class="form-select">
+                            <option value="">Select by Year</option>
+                            @foreach($years as $year)
+                            <option value="{{ $year }}" {{ $year == request('year', now()->year) ? 'selected' : '' }}>
+                                {{ $year }}
+                            </option>
+                            @endforeach
+                        </select>
+                        @error('year')
+                        <p class="text-danger">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-save btn-block" id="save_btn">Search</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+
+            <form action="{{ route('update.task.status', ['type' => $type]) }}" method="POST">
+                @csrf
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($tasks as $task)
+                        <tr>
+                            <td>{{ $task->customer ? $task->customer->name : 'N/A' }}</td>
+                            <td>
+                                <select name="tasks[{{ $task->id }}][status]" class="form-select">
+                                    <option value="">Select Status</option>
                                     <option value="done" {{ $task->status == 'done' ? 'selected' : '' }}>Done</option>
-                                    <option value="not_done" {{ $task->status == 'not_done' ? 'selected' : '' }}>Not
-                                        Done</option>
+                                    <option value="not_done"
+                                        {{ $task->status == 'not_done' || !$task->status ? 'selected' : '' }}>Not Done
+                                    </option>
                                 </select>
-                            </form>
-                        </td>
-                        <td>{{ $task->status_remarks }}</td>
-                        <td>
-                            <button type="submit" class="btn btn-save btn-block" id="save_btn">Save</button>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                            </td>
+                            <td><textarea name="remarks" class="form-control" rows="1"></textarea></td>
+                            <td>
+                                <button type="submit" class="btn btn-save btn-block" id="save_btn">Save</button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </form>
 
             @if($completedTasks->isNotEmpty())
-            <h4 style="color:white;">Completed {{ strtoupper($type) }} Tasks</h4>
+            <h4 style="color:white;">{{ strtoupper($type) }} Completed Tasks</h4><br>
             <table class="table table-striped">
                 <thead class="thead-light">
                     <tr>

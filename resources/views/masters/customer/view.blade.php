@@ -23,7 +23,7 @@
         <div class="tab-content" id="tabcontent">
             <div class="row mb-4 mt-3">
                 <div class="form-group col-md-4">
-                    <label for="customer_name"><b>Customer Name*</b></label>
+                    <label for="customer_name"><b>Customer Name</b></label>
                     <input type="text" class="form-control" id="customer_name"
                         value="{{ old('name', $customers->name) }}" disabled>
                 </div>
@@ -57,18 +57,18 @@
             </div>
             <div class="row mb-3">
                 <div class="form-group col-md-4">
-                    <label for="billing_country_id"><b>Country*</b></label>
+                    <label for="billing_country_id"><b>Country</b></label>
                     <input type="text" class="form-control w-3" name="billing_country_id" id="billing_country_id"
                         value="{{ $customers->billingCountry ? $customers->billingCountry->name : '' }}" disabled>
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="billing_state_id"><b>State*</b></label>
+                    <label for="billing_state_id"><b>State</b></label>
                     <input type="text" class="form-control w-3" name="billing_state_id" id="billing_state_id"
                         value="{{ $customers->billingState ? $customers->billingState->name : '' }}" disabled>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="billing_city_id"><b>City*</b></label>
+                    <label for="billing_city_id"><b>City</b></label>
                     <input type="text" class="form-control w-3" name="billing_city_id" id="billing_city_id"
                         value="{{ $customers->billingCity ? $customers->billingCity->name : '' }}" disabled>
                 </div>
@@ -82,25 +82,25 @@
             </div>
             <div class="row mb-2">
                 <div class="col-md-12 d-flex align-items-center">
-                    <h5 class="mb-0 me-2">Shipping Address*</h5>
+                    <h5 class="mb-0 me-2">Shipping Address</h5>
 
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="form-group col-md-4">
-                    <label for="shipping_country_id"><b>Country*</b></label>
+                    <label for="shipping_country_id"><b>Country</b></label>
                     <input type="text" class="form-control w-3" name="shipping_country_id" id="shipping_country_id"
                         value="{{ $customers->shippingCountry ? $customers->shippingCountry->name : '' }}" disabled>
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="shipping_state_id"><b>State*</b></label>
+                    <label for="shipping_state_id"><b>State</b></label>
                     <input type="text" class="form-control w-3" name="shipping_state_id" id="shipping_state_id"
                         value="{{ $customers->shippingState ? $customers->shippingState->name : '' }}" disabled>
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="shipping_city_id"><b>City*</b></label>
+                    <label for="shipping_city_id"><b>City</b></label>
                     <input type="text" class="form-control w-3" name="shipping_city_id" id="shipping_city_id"
                         value="{{ $customers->shippingCity ? $customers->shippingCity->name : '' }}" disabled>
                 </div>
@@ -132,6 +132,12 @@
                         </div>
                         @endforeach
                     </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="assigned_to"><b>Assigned To</b></label>
+                    <input type="text" class="form-control w-3" name="assigned_to" id="assigned_to"
+                        value="{{ $customers->assignedUser ? $customers->assignedUser->first_name . ' ' : 'Not assigned' }}"
+                        disabled>
                 </div>
             </div>
         </div>

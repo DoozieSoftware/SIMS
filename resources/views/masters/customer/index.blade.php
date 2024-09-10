@@ -29,7 +29,7 @@ Customer
         <div class="search-bar flex-grow-1">
             <div class="position-relative">
                 <div class="col-lg-5">
-                    <input class="form-control rounded-5 px-5 search-control d-lg-block d-none" type="text"
+                    <input class="form-control rounded-5 px-6 search-control d-lg-block d-none" type="text"
                         placeholder="Search by Customer Name, Aadhar Number">
                 </div>
             </div>
@@ -44,6 +44,7 @@ Customer
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Phone Number</th>
                                 <th scope="col">Service Name</th>
+                                <th scope="col">Assigned To</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -62,7 +63,7 @@ Customer
                                     No Services Selected
                                     @endif
                                 </td>
-
+                                <td>{{ $customer->employee ? $customer->employee->first_name : 'N/A' }}</td>
                                 <td>
                                     @if (is_null($customer->deleted_at))
                                     <i class="fas fa-check-circle text-success"></i>

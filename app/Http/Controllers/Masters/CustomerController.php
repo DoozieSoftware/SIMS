@@ -89,7 +89,6 @@ class CustomerController extends Controller
     }
 
 
-
     public function update(CustomerRequest $request, $id)
     {
         $validatedData = $request->validated();
@@ -124,24 +123,21 @@ class CustomerController extends Controller
         $customer->save();
         $customer->services()->sync($validatedData['services'] ?? []);
 
-
-
         return redirect()->route('customer.index')->with('status', 'Customer Updated Successfully');
     }
 
-
     public function show($id)
     {
-        $customers = Customer::with('billingCountry', 'billingState', 'billingCity', 'shippingCountry', 'shippingState', 'shippingState')->find($id);
+        $customers = Customer::with('assignedUser')->findOrFail($id);
         $countries = Country::all();
         $states = State::all();
         $cities = City::all();
-        $employees = Employee::select('id', 'first_name')->get();
+        $employees = Employee::select('id', 'first_name', 'last_name')->get();
         $services = Service::select('id', 'name')->get();
-
 
         return view('masters.customer.view', compact('customers', 'countries', 'states', 'cities', 'employees', 'services'));
     }
+
 
     public function edit($id)
     {
@@ -156,7 +152,6 @@ class CustomerController extends Controller
 
         return view('masters.customer.edit', compact('customers', 'countries', 'states', 'cities', 'employees', 'services'));
     }
-
 
     public function deactivate($id)
     {
